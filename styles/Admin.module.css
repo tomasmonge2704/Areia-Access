@@ -1,0 +1,129 @@
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 1000px;
+  margin: auto;
+  min-height: 60vh;
+}
+
+.row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 95%;
+  border: 1px solid rgba(229, 231, 235, 1);
+  border-bottom: none;
+}
+
+.row:first-child {
+  border-radius: 10px;
+}
+
+.row:first-of-type {
+  border-radius: 10px 10px 0px 0px;
+}
+
+.row:last-child {
+  border-bottom: 1px solid rgba(229, 231, 235, 1);
+  border-radius: 0px 0px 10px 10px;
+}
+
+.item:last-child {
+  margin-right: 0px;
+}
+
+.input {
+  max-width: 80px;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid;
+  padding: 10px;
+  border-color: rgba(229, 231, 235, 1);
+  -webkit-appearance: none;
+}
+
+.bigInput {
+  width: 95%;
+  padding: 20px;
+  border: 1px solid rgba(229, 231, 235, 1);
+  margin-bottom: 10px;
+  border-radius: 10px;
+  min-height: 50px;
+  background-color: white;
+  -webkit-appearance: none;
+}
+
+.option {
+  padding: 20px;
+}
+
+.buttonContainer {
+  max-width: 100px;
+}
+
+.button {
+  background-color: #dff0d8;
+  color: #3c763d;
+  padding: 10px;
+  justify-content: center;
+  width: 90px;
+  margin: auto;
+}
+
+.alignContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0px 20px 0px;
+}
+
+.pagination {
+  justify-content: space-around;
+  max-width: 100%;
+}
+
+.paginationButton {
+  padding: 10px;
+}
+
+.paginationButton:hover {
+  cursor: pointer;
+}
+
+.paginationContainer {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.joystick {
+  font-weight: bold;
+  -webkit-appearance: none;
+  border: none;
+  font-size: 16px;
+  background-color: transparent;
+}
+
+.currentPage {
+  text-decoration: underline;
+}
+
+.alignItems {
+  display: flex;
+  align-items: center;
+}
+
+.item {
+  width: 110px;
+  overflow: hidden;
+  text-align: center;
+}

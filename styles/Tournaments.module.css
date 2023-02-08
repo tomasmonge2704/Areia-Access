@@ -1,0 +1,69 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  margin: auto;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+.bigInput {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid rgba(229, 231, 235, 1);
+  border-radius: 10px;
+  background-color: white;
+  -webkit-appearance: none;
+}
+
+.title {
+  display: flex;
+  font-size: 20px;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+
+.buttonSecondary {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px 25px 10px 15px;
+  text-align: center;
+  justify-content: center;
+}
+
+.editRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.buttonMargin {
+  margin-left: 10px;
+  margin-top: 0px;
+}
+
+.tournament {
+  list-style: none;
+  margin-bottom: 5px;
+}
+
+.listContainer {
+  width: 100%;
+  padding-left: 0px;
+}
+
+.error {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.inputContainer {
+  width: 100%;
+  margin-bottom: 20px;
+}

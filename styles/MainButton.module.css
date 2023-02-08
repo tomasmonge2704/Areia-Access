@@ -1,0 +1,34 @@
+.button {
+  background-color: #383634;
+  color: #f5ff35;
+  padding: 10px 5px;
+  border-radius: 10px;
+  border: 1px solid #ffffff;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.button:disabled,
+.button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.secondary {
+  background-color: #ffffff;
+  color: #383634;
+  border: 1px solid;
+  margin-top: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  font-weight: 700;
+}
