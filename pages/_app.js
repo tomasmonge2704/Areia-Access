@@ -3,14 +3,14 @@ import Head from "next/head";
 import "firebase/auth";
 import firebase from "firebase/app";
 import { FirebaseAuthProvider } from "@react-firebase/auth";
-import { config } from "../firebase/config";
+import { firebaseConfig } from "../firebase/config";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "../styles/globals.css";
 import Auth from "../components/auth";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <FirebaseAuthProvider firebase={firebase} {...config}>
+    <FirebaseAuthProvider firebase={firebase} {...firebaseConfig}>
       <Head>
         <title>AREIA</title>
         <meta
