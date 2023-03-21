@@ -59,7 +59,7 @@ export default function Auth({ children }) {
   }, [googleUser]);
 
   useEffect(() => {
-    if (googleUser && error==null) {
+    if (googleUser && error == null) {
       getCurrentUser();
     }
   }, [error, getCurrentUser, googleUser]);
@@ -157,6 +157,12 @@ export default function Auth({ children }) {
               onClick={loginWithGoogle}
               disabled={!successDni}
             />
+            <a href="https://parking-festivap.web.app/">
+              <MainButton
+                text="Parking"
+                disabled={false}
+              />
+            </a>
           </div>
         </div>
       )}
