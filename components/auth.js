@@ -3,7 +3,6 @@ import Loader from "react-loader-spinner";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect, createContext, useCallback } from "react";
-
 import firebase from "../firebase/config";
 import MainButton from "./MainButton";
 import ErrorMessage from "./ErrorMessage";
@@ -76,7 +75,6 @@ export default function Auth({ children }) {
         setSuccessDni(false);
         return setError(data.errorMessage);
       }
-
       if (data.success) {
         setError(false);
         setSuccessDni(true);
