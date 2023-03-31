@@ -8,6 +8,7 @@ import MainButton from "./MainButton";
 import ErrorMessage from "./ErrorMessage";
 import useDebounce from "../hooks/useDebounce";
 import styles from "../styles/Auth.module.css";
+
 export const AuthContext = createContext({
   googleUser: null,
   currentUser: null,
@@ -158,12 +159,6 @@ export default function Auth({ children }) {
               onClick={loginWithGoogle}
               disabled={!successDni}
             />
-            <a href="https://parking-festivap.web.app/">
-              <MainButton
-                text="Parking"
-                disabled={false}
-              />
-            </a>
           </div>
         </div>
       )}
