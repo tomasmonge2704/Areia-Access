@@ -129,6 +129,7 @@ const Generate = ({ loading, qr, generateQr, errorMessage }) => {
   const showError = errorMessage && errorMessage.site === "generate";
   return (
     <div className={styles.section}>
+      <img src="logo_ico.png" style={{marginTop:"1.5em"}} />
       <h2>AREIA ACCESS</h2>
       {loading && (
         <Loader

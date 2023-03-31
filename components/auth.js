@@ -8,7 +8,6 @@ import MainButton from "./MainButton";
 import ErrorMessage from "./ErrorMessage";
 import useDebounce from "../hooks/useDebounce";
 import styles from "../styles/Auth.module.css";
-
 export const AuthContext = createContext({
   googleUser: null,
   currentUser: null,
@@ -145,7 +144,9 @@ export default function Auth({ children }) {
         <div className={styles.container}>
           {error && <ErrorMessage error={error} />}
           <div className={styles.item}>
-            <h1 className={styles.title}>Ingresar a AREIA</h1>
+          <div style={{display:"flex",justifyContent:"center"}}>
+          <img src="logo.webp" style={{margin:"1.5em"}}/>
+          </div>
             <input
               type="text"
               placeholder="Ingrese su dni"
