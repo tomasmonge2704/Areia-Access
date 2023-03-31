@@ -1,21 +1,22 @@
 .button {
-  background-color: #383634;
-  color: #f5ff35;
+  background-color: #f5ff35;
+  color: black;
   padding: 10px 5px;
   border-radius: 10px;
-  border: 1px solid #ffffff;
+  border: none;
   width: 100%;
   margin-top: 20px;
 }
 
 .button:disabled,
 .button[disabled] {
-  border: 1px solid #999999;
-  background-color: #cccccc;
+  border: 1px solid rgb(28,28,30);
+  background-color: rgb(28,28,30);
   color: #666666;
 }
 
-.button:hover {
+.button:hover:enabled {
+  box-shadow: 7px 5px 56px -14px #C3D900;
   cursor: pointer;
 }
 

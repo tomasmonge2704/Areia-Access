@@ -11,7 +11,6 @@
 }
 
 .section {
-  border: 1px solid rgba(229, 231, 235, 1);
   padding: 10px 5px;
   border-radius: 10px;
   display: flex;
@@ -19,6 +18,13 @@
   margin: 15px 0px;
   width: 100%;
   align-items: center;
+  background: #212121;
+ box-shadow: 15px 15px 30px rgb(25, 25, 25), -15px -15px 30px rgb(32 30 30);
+}
+
+.section h2 {
+  color: white;
+  font-weight: 300;
 }
 
 .item {
@@ -34,10 +40,17 @@
 }
 
 .sharebutton {
-  border: 1px solid rgba(229, 231, 235, 1);
+  color: #fff;
+  border: none;
+  background-color: rgb(28,28,30);
+  box-shadow: 0 0 .4vw rgba(0,0,0,0.5), 0 0 0 .15vw transparent;
   padding: 5px 10px;
   max-width: 80%;
   margin: auto;
+}
+
+.sharebutton:hover{
+  box-shadow: none !important;
 }
 
 .mainButton {
