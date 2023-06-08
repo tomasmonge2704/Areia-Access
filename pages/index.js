@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, useCallback } from "react";
 import Loader from "react-loader-spinner";
 import axios from "axios";
 import Link from "next/link";
-
+import Parking from "../components/ParkingButton";
 import QrGenerator from "../components/QrGenerator";
 import MainButton, { InviteButton } from "../components/MainButton";
 import styles from "../styles/generate-qr.module.css";
@@ -328,7 +328,11 @@ const GenerateQr = ({ apiUrl, appUrl }) => {
           generateQr={generateQr}
           errorMessage={errorMessage}
         />
+        {(rol === 0 ) && (
+            <Parking styles={styles} />
+          )}
         {(rol === 1 || rol === 3) && (
+          <>
           <Invites
             invites={invites}
             appUrl={appUrl}
@@ -341,6 +345,8 @@ const GenerateQr = ({ apiUrl, appUrl }) => {
             userId={currentUser._id}
             setErrorMessage={setErrorMessage}
           />
+          <Parking styles={styles}/>
+          </>
         )}
         {rol === 3 && (
           <>

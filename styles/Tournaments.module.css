@@ -21,6 +21,7 @@
 }
 
 .title {
+  color: #fff;
   display: flex;
   font-size: 20px;
   margin-bottom: 10px;
