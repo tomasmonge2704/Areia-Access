@@ -45,7 +45,7 @@ const ListOfInvites = ({
               {isValidated ? "Validada" : "Compartida"}
             </p>
           )}
-          <img src={icon} className={styles.icon} />
+          <img src={icon} className={styles.icon} style={isValidated ? {filter: "hue-rotate(40deg) saturate(300%)"} : null} />
         </div>
       </div>
     );
@@ -143,7 +143,7 @@ const Generate = ({ loading, qr, generateQr, errorMessage }) => {
       {qr && !loading && <QrGenerator url={qr.code} size={220} />}
       {showError && <ErrorMessage error={errorMessage.message} />}
       <MainButton
-        text="Generar Código QR"
+        text="Generar Código QR de jugador"
         onClick={generateQr}
         buttonStyle={styles.mainButton}
       />
@@ -328,11 +328,7 @@ const GenerateQr = ({ apiUrl, appUrl }) => {
           generateQr={generateQr}
           errorMessage={errorMessage}
         />
-        {(rol === 0 ) && (
-            <Parking styles={styles} />
-          )}
         {(rol === 1 || rol === 3) && (
-          <>
           <Invites
             invites={invites}
             appUrl={appUrl}
@@ -345,8 +341,6 @@ const GenerateQr = ({ apiUrl, appUrl }) => {
             userId={currentUser._id}
             setErrorMessage={setErrorMessage}
           />
-          <Parking styles={styles}/>
-          </>
         )}
         {rol === 3 && (
           <>
