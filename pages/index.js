@@ -328,6 +328,7 @@ const GenerateQr = ({ apiUrl, appUrl }) => {
           generateQr={generateQr}
           errorMessage={errorMessage}
         />
+        <Parking styles={styles}/>
         {(rol === 1 || rol === 3) && (
           <Invites
             invites={invites}
