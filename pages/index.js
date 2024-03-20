@@ -10,6 +10,8 @@ import MainButton, { InviteButton } from "../components/MainButton";
 import styles from "../styles/generate-qr.module.css";
 import ErrorMessage from "../components/ErrorMessage";
 import { AuthContext } from "../components/auth";
+import LogoutButton from "../components/logoutButton";
+
 
 const ListOfInvites = ({
   invites,
@@ -328,7 +330,7 @@ const GenerateQr = ({ apiUrl, appUrl }) => {
           generateQr={generateQr}
           errorMessage={errorMessage}
         />
-        <Parking styles={styles}/>
+        <Parking styles={styles} dni={currentUser.dni}/>
         {(rol === 1 || rol === 3) && (
           <Invites
             invites={invites}
@@ -350,6 +352,7 @@ const GenerateQr = ({ apiUrl, appUrl }) => {
           </>
         )}
         {(rol === 2 || rol === 3) && <Reader />}
+          <LogoutButton />
       </div>
     );
   }

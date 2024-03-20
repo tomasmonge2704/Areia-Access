@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState, useEffect, useCallback, useContext } from "react";
 import Loader from "react-loader-spinner";
-
 import MainButton from "../components/MainButton";
 import ErrorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
@@ -51,6 +50,7 @@ const Admin = ({ apiUrl, tournaments }) => {
   const [errorMessage, setErrorMessage] = useState();
   const [successMessage, setSuccessMessage] = useState();
   const [captainsList, setCaptainList] = useState();
+  const [numberGlobal,setNumberGlobal] = useState(8);
   const [captainsAmount, setCaptainsAmount] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -75,7 +75,18 @@ const Admin = ({ apiUrl, tournaments }) => {
     }
     setSuccessMessage("Capitan actualizado correctamente");
   };
-
+  const handleUpdateAllCaptains = async (number) => {
+    try {
+      const { data } = await axios.put(
+        `${apiUrl}/update-captains`,{
+          nuevoMaxInviteCount:number
+        }
+      );
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  }
   const handleChange = (e, captain) => {
     const captainId = captain._id;
 
@@ -173,7 +184,6 @@ const Admin = ({ apiUrl, tournaments }) => {
       </div>
     );
   }
-
   return (
     <div className={styles.container}>
       <h2>Administrar capitanes</h2>
@@ -203,6 +213,24 @@ const Admin = ({ apiUrl, tournaments }) => {
           </select>
           {errorMessage && <ErrorMessage error={errorMessage} />}
           {successMessage && <SuccessMessage message={successMessage} />}
+          <div className={styles.row}>
+              <p className={styles.item}>Todos los capitanes</p>
+              <input
+                name="amount"
+                type="number"
+                defaultValue={numberGlobal}
+                onChange={(e) => setNumberGlobal(e.target.value)}
+                className={`${styles.item} ${styles.input}`}
+              />
+              <div className={`${styles.item} ${styles.buttonContainer}`}>
+                <MainButton
+                  text="Actualizar"
+                  secondary
+                  onClick={() => handleUpdateAllCaptains(numberGlobal)}
+                  buttonStyle={styles.button}
+                />
+              </div>
+            </div>
           <div className={styles.alignContent}>
             <div className={styles.row}>
               {labels.map((label, index) => (
