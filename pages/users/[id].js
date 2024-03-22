@@ -81,7 +81,7 @@ export default function User() {
               justifyContent: "space-between",
             }}
           >
-            <div className={styles.section}>
+            { user.proveedor && <div className={styles.section}>
                 
               <h2>Todo torneos</h2>
               <p>DNI: {user.proveedor.dni}</p>
@@ -103,7 +103,7 @@ export default function User() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div>}
             <div className={styles.section}>
                 
               <h2>Mongo</h2>

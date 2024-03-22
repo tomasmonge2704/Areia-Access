@@ -247,7 +247,7 @@ const GenerateQr = ({ apiUrl, appUrl }) => {
       setErrorMessage({});
     }, 6000);
 
-    return () => {
+    () => {
       clearTimeout(handler);
     };
   }, [errorMessage]);
