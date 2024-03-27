@@ -25,7 +25,7 @@ export default function LoginPage() {
     if (session?.user?.email) {
       const dni = localStorage.getItem("dni");
       try {
-        const { data } = await axios.post(`${process.env.API_URL}/login`, {
+        const { data } = await axios.post(`${process.env.API_URL}/loginV2`, {
           dni,
           email: session.user.email,
         });

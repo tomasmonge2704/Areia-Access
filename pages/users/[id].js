@@ -81,7 +81,7 @@ export default function User() {
               justifyContent: "space-between",
             }}
           >
-            { user.proveedor && <div className={styles.section}>
+            { user?.proveedor && <div className={styles.section}>
                 
               <h2>Todo torneos</h2>
               <p>DNI: {user.proveedor.dni}</p>
@@ -104,7 +104,7 @@ export default function User() {
                 ))}
               </div>
             </div>}
-            <div className={styles.section}>
+            {user?.mongoUser && <div className={styles.section}>
                 
               <h2>Mongo</h2>
               {errorMessage && <ErrorMessage error={errorMessage} />}
@@ -138,8 +138,11 @@ export default function User() {
                 />
               </div>
              
+            </div>}
+            {!user && <div className={styles.section}>
+              <h2>Usuario no encontrado</h2>
             </div>
-            
+              }
           </div>
         </>
       )}

@@ -31,6 +31,7 @@ export default function Auth({ children }) {
         }
       }
     }
+    console.log(process.env.NEXTAUTH_URL);
   }, [session, status]);
 
   if (loading) {
