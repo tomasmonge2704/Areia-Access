@@ -23,7 +23,7 @@ export default function Auth({ children }) {
       setLoading(false);
       // Si la sesión existe, establece el usuario actual
       if (session) {
-        console.log(session)
+        console.log(process.env.NEXTAUTH_URL)
         const dni = localStorage.getItem('dni');
         const { data } = await axios.get(`${process.env.API_URL}/users/${dni}`);
         if(data.email === session.email){ 
