@@ -4,62 +4,66 @@ import styles from "../styles/Auth.module.css";
 import Loader from "react-loader-spinner";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { hideEmail } from "./ultis";
 import LoginPage from "./login";
 export const AuthContext = createContext({
   currentUser: null,
 });
 
-
 export default function Auth({ children }) {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
-  const router = useRouter();
+  const [dni, setDni] = useState(undefined);
   useEffect(async () => {
-    if (status === "loading") {
-      // Si está cargando la sesión, muestra el loader
-      setLoading(true);
-    } else {
-      setLoading(false);
       // Si la sesión existe, establece el usuario actual
-      if (session) {
-        console.log(process.env.NEXTAUTH_URL)
-        const dni = localStorage.getItem('dni');
-        const { data } = await axios.get(`${process.env.API_URL}/users/${dni}`);
-        if(data.email === session.email){ 
+      const getDni = localStorage.getItem("dni");
+      setDni(getDni);
+      const { data } = await axios.get(`${process.env.API_URL}/users/${dni}`);
+      setLoading(false);
+      if (session?.user?.email && dni) {
+        if (data?.mongoUser?.email === session.user.email) {
           setCurrentUser(data.mongoUser);
+        } else {
+          setError(
+            `El DNI ${dni} esta asociado al email ${hideEmail(
+              data?.mongoUser?.email
+            )} y no a ${hideEmail(session.user.email)}`
+          );
         }
       }
-    }
-    console.log(process.env.NEXTAUTH_URL);
   }, [session, status]);
 
-  if (loading) {
-    return (
-      <div className={styles.container}>
-        <Loader
-          type="TailSpin"
-          color="#F5FF35"
-          height={100}
-          width={100}
-          timeout={3000}
-        />
-      </div>
-    );
-  }
-
-  if (currentUser) {
-    return (
-      <AuthContext.Provider
-        value={{
-          loading,
-          currentUser,
-        }}
-      >
-        {children}
-      </AuthContext.Provider>
-    );
-  } else {
-    return <LoginPage/>
-  }
+  return (
+    <>
+      {loading ? (
+        <div className={styles.container}>
+          <Loader
+            type="TailSpin"
+            color="#F5FF35"
+            height={100}
+            width={100}
+            timeout={3000}
+          />
+        </div>
+      ) : (
+        <>
+          {currentUser ? (
+            <AuthContext.Provider
+            value={{
+              loading,
+              currentUser,
+            }}
+          >
+            {children}
+          </AuthContext.Provider>
+          ) : (
+            <LoginPage />
+          )}
+        </>
+      )}
+    </>
+  );
 }

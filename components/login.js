@@ -1,42 +1,70 @@
-import { useSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styles from "../styles/Auth.module.css";
 import ErrorMessage from "./ErrorMessage";
 import MainButton from "./MainButton";
 import { verifyDni } from "./ultis";
-import { useRouter } from "next/router";
 import axios from "axios";
+import { SocialButton } from "./socialButton";
+import VerificationCode from "./verificationCode";
 
 export default function LoginPage() {
-  const { data: session } = useSession();
   const [error, setError] = useState();
   const [successDni, setSuccessDni] = useState(false);
-  const router = useRouter();
+  const [viewLogin, setViewLogin] = useState(false);
+  const [email, setEmail] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  const [verifiedEmail, setVerifiedEmail] = useState(false);
+  const [dni, setDni] = useState();
   const handleChange = (event) => {
-    const dni = event.target.value;
+    setDni(event.target.value);
+  };
+  useEffect(() => {
     // Expresión regular para validar el formato del DNI peruano (8 dígitos numéricos)
     const dniRegex = /^\d{8}$/;
     if (dni && dniRegex.test(dni)) {
       localStorage.setItem("dni", dni);
       verifyDni(dni, setError, setSuccessDni);
     }
-  };
-  useEffect(async () => {
-    if (session?.user?.email) {
-      const dni = localStorage.getItem("dni");
-      try {
-        const { data } = await axios.post(`${process.env.API_URL}/loginV2`, {
-          dni,
-          email: session.user.email,
-        });
-        if (data.errorMessage) {
-          setError(data.errorMessage);
-        }
-      } catch (err) {
-        setError('Error de servidor');
-      }
+  },[dni])
+  const confirmEmail = async () => {
+    // Expresión regular para validar el formato de correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    // Verificar si el correo electrónico es válido antes de marcarlo como verificado
+    if (email && emailRegex.test(email)) {
+      const { data } = await axios.post(`${process.env.API_URL}/verifyEmail`, {
+        dni,
+        email,
+      });
+      if(data.email) setVerifiedEmail(true);
+      if(error) setError(undefined);
+      if(data.errorMessage) setError(data.errorMessage);
+    } else {
+     setError('Formato del email invalido')
     }
-  }, [session]);
+  }
+  const handleConfirmLogin = async () => {
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password: verificationCode, // Utiliza el código de verificación como contraseña
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+      setError("Error de servidor");
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    await signIn("facebook");
+  };
+
+  const handleGoogleLogin = async () => {
+    await signIn("google");
+  };
+  
   return (
     <>
       <div className={styles.container}>
@@ -45,18 +73,64 @@ export default function LoginPage() {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <img src="logo.webp" style={{ margin: "1.5em" }} />
           </div>
-
-          <input
-            type="text"
-            placeholder="Ingrese su dni"
-            onChange={handleChange}
-            className={styles.input}
-          />
-          <MainButton
-            text="Ingresar a AREIA"
-            onClick={() => signIn()}
-            disabled={!successDni}
-          />
+          {successDni && viewLogin ? (
+            <>
+            {verifiedEmail ? (
+            <>
+            <input
+                type="email"
+                placeholder="Email"
+                disabled={true}
+                value={email}
+                className={styles.input}
+                style={{marginBottom:"6%"}}
+              /> 
+              <VerificationCode setVerificationCode={setVerificationCode}/>
+              <MainButton
+              text="Confirmar"
+              onClick={handleConfirmLogin}
+            />
+            </>) : (<>
+              
+            <input
+                type="mail"
+                placeholder="Email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className={styles.input}
+              />
+              <MainButton
+              text="continuar"
+              onClick={confirmEmail}
+            />
+             <div className={styles.separator}>
+            <hr className={styles.line} />
+            <span>O</span>
+            <hr className={styles.line} />
+          </div>
+            <div>
+            <SocialButton text="Iniciar sesión con Facebook" onClick={handleFacebookLogin} style='FacebookButton'/>
+            <SocialButton text="Iniciar sesión con Google" onClick={handleGoogleLogin} style='GoogleButton'/>
+          </div>
+            </>
+              )}
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                placeholder="Ingrese su dni"
+                value={dni}
+                onChange={handleChange}
+                className={styles.input}
+              />
+              <MainButton
+                text="Ingresar a AREIA"
+                onClick={() => setViewLogin(true)}
+                disabled={!successDni}
+              />
+            </>
+          )}
         </div>
       </div>
     </>

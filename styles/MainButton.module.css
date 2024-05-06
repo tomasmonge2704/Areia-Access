@@ -7,6 +7,25 @@
   width: 100%;
   margin-top: 20px;
 }
+.FacebookButton {
+  background-color: #006aff;
+  color: white;
+  padding: 10px 5px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.GoogleButton {
+  background-color: #fff;
+  color: black;
+  padding: 10px 5px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  margin-top: 20px;
+}
 
 .button:disabled,
 .button[disabled] {
@@ -15,7 +34,7 @@
   color: #666666;
 }
 
-.button:hover:enabled {
+.button:hover:enabled,.FacebookButton:hover:enabled,.GoogleButton:hover:enabled {
   box-shadow: 7px 5px 56px -14px #C3D900;
   cursor: pointer;
 }

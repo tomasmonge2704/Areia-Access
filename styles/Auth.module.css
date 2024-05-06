@@ -23,6 +23,22 @@
   box-shadow: 0 0 .4vw rgba(0,0,0,0.5), 0 0 0 .15vw transparent;
   -webkit-appearance: none;
 }
+.inputVerificationCode {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid;
+  width: 40px;
+  margin-right: 0.5rem;
+  text-align: center;
+  font-size: 1.25rem;
+  height: 40px;
+  color: #fff;
+  border: none;
+  background-color: rgb(28,28,30);
+  box-shadow: 0 0 .4vw rgba(0,0,0,0.5), 0 0 0 .15vw transparent;
+  -webkit-appearance: none;
+}
 .input:hover {
   box-shadow: 0 0 0 .15vw rgba(135, 207, 235, 0.186);
 }
@@ -40,3 +56,20 @@
 .item {
   width: 100%;
 }
+.separator {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  color: #fff;
+  margin: 10px 0px 10px 0px;
+}
+.separator .line {
+  display: block;
+  width: 100%;
+  height: 1px;
+  border: 0;
+  background-color:#fff;
+}
+
