@@ -17,6 +17,7 @@ export default function User() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(undefined);
   const [rol, setRole] = useState(undefined);
+  const [email, setEmail] = useState(undefined);
   // Check if user is not admin
   if (!isAdmin) {
     return (
@@ -57,6 +58,7 @@ export default function User() {
   const handleEdit = async () => {
     try {
       if (user.mongoUser) {
+        if(email) user.mongoUser.email = email;
         const { data } = await axios.put(
           `${process.env.API_URL}/users/${user.mongoUser._id}`,{...user.mongoUser,rol}
         );
@@ -121,19 +123,31 @@ export default function User() {
                   className={`${styles.item} ${styles.input}`}
                 />
               </div>
-
-              <p>mail: {user.mongoUser.email}</p>
-              {user.mongoUser.verificationCode && <p>codigo: {user.mongoUser.verificationCode}</p>}
+              <div className={styles.row} style={{ border: "0px",width:"100%" }}>
+                <p>Email: </p>{" "}
+                <input
+                  name="email"
+                  type="text"
+                  onChange={(event) => setEmail(event.target.value)}
+                  defaultValue={user.mongoUser.email}
+                  style={{width:"200px"}}
+                />
+              </div>
+              {user.mongoUser.verificationCode && (
               <div className={styles.row} style={{ border: "0px" }}>
+              <p>Codigo: </p>
+              <p> {user.mongoUser.verificationCode}</p>
+            </div>)}
+              <div style={{ border: "0px",display:"flex",width:"30%",marginTop:"5%" }}>
                 <MainButton
                   text="editar"
-                  secondary
+                  style={{backgroundColor:"blue",color:"white"}}
                   onClick={() => handleEdit()}
                   buttonStyle={styles.button}
                 />
                 <MainButton
                   text="borrar"
-                  secondary
+                  style={{backgroundColor:"red",color:"white"}}
                   onClick={() => handleDelete()}
                   buttonStyle={styles.button}
                 />

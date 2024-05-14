@@ -4,13 +4,14 @@ import styles from "../styles/MainButton.module.css";
 
 const ENABLED_SITES = ["copy", "whatsapp", "mail", "telegram"];
 
-const MainButton = ({ onClick, text, secondary, buttonStyle, disabled }) => (
+const MainButton = ({ onClick, text, secondary, buttonStyle, disabled,style }) => (
   <button
     className={`${styles.button} ${
       secondary && styles.secondary
     } ${buttonStyle}`}
     onClick={onClick}
     disabled={disabled}
+    style={style}
   >
     {text}
   </button>
