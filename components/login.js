@@ -8,8 +8,8 @@ import axios from "axios";
 import { SocialButton } from "./socialButton";
 import VerificationCode from "./verificationCode";
 
-export default function LoginPage() {
-  const [error, setError] = useState();
+export default function LoginPage({err}) {
+  const [error, setError] = useState(err);
   const [successDni, setSuccessDni] = useState(false);
   const [viewLogin, setViewLogin] = useState(false);
   const [email, setEmail] = useState('');
@@ -20,11 +20,16 @@ export default function LoginPage() {
     setDni(event.target.value);
   };
   useEffect(() => {
+    setError(err);
+  },[err])
+  useEffect(() => {
     // Expresión regular para validar el formato del DNI peruano (8 dígitos numéricos)
     const dniRegex = /^\d{8}$/;
     if (dni && dniRegex.test(dni)) {
       localStorage.setItem("dni", dni);
       verifyDni(dni, setError, setSuccessDni);
+    } else {
+      setSuccessDni(false);
     }
   },[dni])
   const confirmEmail = async () => {

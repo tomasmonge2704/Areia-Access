@@ -3,15 +3,13 @@ import { createContext, useState, useEffect } from "react";
 import styles from "../styles/Auth.module.css";
 import Loader from "react-loader-spinner";
 import axios from "axios";
-import { useRouter } from "next/router";
-import { hideEmail } from "./ultis";
+import { hideEmail, updateEmailUser } from "./ultis";
 import LoginPage from "./login";
 export const AuthContext = createContext({
   currentUser: null,
 });
 
 export default function Auth({ children }) {
-  const router = useRouter();
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(undefined);
@@ -21,12 +19,21 @@ export default function Auth({ children }) {
       // Si la sesión existe, establece el usuario actual
       const getDni = localStorage.getItem("dni");
       setDni(getDni);
-      const { data } = await axios.get(`${process.env.API_URL}/users/${dni}`);
+      const { data } = await axios.get(`${process.env.API_URL}/users/${getDni}`);
       setLoading(false);
-      if (session?.user?.email && dni) {
-        if (data?.mongoUser?.email === session.user.email) {
+      const { email } = data.mongoUser;
+      if (session?.user?.email && getDni) {
+        if (email === session.user.email) {
           setCurrentUser(data.mongoUser);
-        } else {
+        }
+        console.log(email);
+        if(!email && session.user) {
+          const newUser = {...data.mongoUser,email:session.user.email}
+          updateEmailUser(newUser);
+          setCurrentUser(newUser);
+        }
+        if(email && email  !== session.user.email){
+          console.log(data?.mongoUser?.email);
           setError(
             `El DNI ${dni} esta asociado al email ${hideEmail(
               data?.mongoUser?.email
@@ -34,7 +41,7 @@ export default function Auth({ children }) {
           );
         }
       }
-  }, [session, status]);
+  }, [session]);
 
   return (
     <>
@@ -60,7 +67,7 @@ export default function Auth({ children }) {
             {children}
           </AuthContext.Provider>
           ) : (
-            <LoginPage />
+            <LoginPage err={error}/>
           )}
         </>
       )}

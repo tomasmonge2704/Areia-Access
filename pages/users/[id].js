@@ -78,6 +78,7 @@ export default function User() {
             style={{
               width: "100%",
               display: "flex",
+              flexWrap: "wrap",
               justifyContent: "space-between",
             }}
           >
@@ -122,7 +123,7 @@ export default function User() {
               </div>
 
               <p>mail: {user.mongoUser.email}</p>
-              <p>googleId: {user.mongoUser.googleId}</p>
+              {user.mongoUser.verificationCode && <p>codigo: {user.mongoUser.verificationCode}</p>}
               <div className={styles.row} style={{ border: "0px" }}>
                 <MainButton
                   text="editar"

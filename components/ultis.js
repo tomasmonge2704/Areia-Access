@@ -28,6 +28,15 @@ export const hideEmail = function (email) {
       } return gp2;
     });
 };
+export const updateEmailUser = async (user) => {
+  const { _id } = user;
+  delete user._id;
+  try{
+    await axios.put(`${process.env.API_URL}/users/${_id}`,user);
+  } catch (err) {
+    console.log(err);
+  }
+}
 const loginWithGoogle = async () => {
     try {
       if (!dni) {
