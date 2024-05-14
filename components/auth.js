@@ -32,14 +32,14 @@ export default function Auth({ children }) {
           updateEmailUser(newUser);
           setCurrentUser(newUser);
         }
-        if(email && email  !== session.user.email){
+        if(email && email.toLowerCase() !== session.user.email.toLowerCase()){
           console.log(data?.mongoUser?.email);
           setError(
-            `El DNI ${dni} esta asociado al email ${hideEmail(
+            `El DNI ${dni} está asociado al email ${hideEmail(
               data?.mongoUser?.email
             )} y no a ${hideEmail(session.user.email)}`
           );
-        }
+        }        
       }
   }, [session]);
 
