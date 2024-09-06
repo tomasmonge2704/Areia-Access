@@ -113,6 +113,8 @@ export default function User() {
               {errorMessage && <ErrorMessage error={errorMessage} />}
               {successMessage && <SuccessMessage message={successMessage} />}
               <p>DNI: {user.mongoUser.dni}</p>
+              <p>id: {user.mongoUser.id}</p>
+
               <div className={styles.row} style={{ border: "0px" }}>
                 <p>Rol: </p>{" "}
                 <input

@@ -16,14 +16,18 @@ export default function LoginPage({err}) {
   const [verificationCode, setVerificationCode] = useState('');
   const [verifiedEmail, setVerifiedEmail] = useState(false);
   const [dni, setDni] = useState();
+  const [attemptsLeft, setAttemptsLeft] = useState(3); // Para rastrear los intentos restantes
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Para deshabilitar el botón tras 3 intentos fallidos
+
   const handleChange = (event) => {
     setDni(event.target.value);
   };
+
   useEffect(() => {
     setError(err);
-  },[err])
+  }, [err]);
+
   useEffect(() => {
-    // Expresión regular para validar el formato del DNI peruano (8 dígitos numéricos)
     const dniRegex = /^\d{8}$/;
     if (dni && dniRegex.test(dni)) {
       localStorage.setItem("dni", dni);
@@ -31,34 +35,51 @@ export default function LoginPage({err}) {
     } else {
       setSuccessDni(false);
     }
-  },[dni])
+  }, [dni]);
+
   const confirmEmail = async () => {
-    // Expresión regular para validar el formato de correo electrónico
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
-    // Verificar si el correo electrónico es válido antes de marcarlo como verificado
     if (email && emailRegex.test(email)) {
       const { data } = await axios.post(`${process.env.API_URL}/verifyEmail`, {
         dni,
         email,
       });
-      if(data.email) setVerifiedEmail(true);
-      if(error) setError(undefined);
-      if(data.errorMessage) setError(data.errorMessage);
+      if (data.email) setVerifiedEmail(true);
+      if (error) setError(undefined);
+      if (data.errorMessage) setError(data.errorMessage);
     } else {
-     setError('Formato del email invalido')
+      setError('Formato del email invalido');
     }
-  }
+  };
+
   const handleConfirmLogin = async () => {
-    try {
-      const res = await signIn("credentials", {
-        email,
-        password: verificationCode, // Utiliza el código de verificación como contraseña
-      });
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-      setError("Error de servidor");
+    if (attemptsLeft > 0) {
+      try {
+        const { data, status } = await axios.post(`${process.env.API_URL}/loginV2`, {
+          dni,
+          email,
+          verificationCode
+        });
+        if (status === 200 && data.email) {
+          const res = await signIn("credentials", {
+            email,
+            password: verificationCode, 
+          });
+          console.log(res);
+        } else {
+          setAttemptsLeft(attemptsLeft - 1); // Resta un intento
+          setError(`Código incorrecto. Te quedan ${attemptsLeft - 1} intentos.`);
+          
+          if (attemptsLeft - 1 === 0) {
+            setIsButtonDisabled(true); // Deshabilita el botón tras 3 intentos
+            setError("Has alcanzado el límite de intentos. El botón ha sido deshabilitado.");
+          }
+        }
+      } catch (err) {
+        console.log(err);
+        setError("Error de servidor");
+      }
     }
   };
 
@@ -69,7 +90,7 @@ export default function LoginPage({err}) {
   const handleGoogleLogin = async () => {
     await signIn("google");
   };
-  
+
   return (
     <>
       <div className={styles.container}>
@@ -80,44 +101,46 @@ export default function LoginPage({err}) {
           </div>
           {successDni && viewLogin ? (
             <>
-            {verifiedEmail ? (
-            <>
-            <input
-                type="email"
-                placeholder="Email"
-                disabled={true}
-                value={email}
-                className={styles.input}
-                style={{marginBottom:"6%"}}
-              /> 
-              <VerificationCode setVerificationCode={setVerificationCode}/>
-              <MainButton
-              text="Confirmar"
-              onClick={handleConfirmLogin}
-            />
-            </>) : (<>
-              
-            <input
-                type="mail"
-                placeholder="Email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                className={styles.input}
-              />
-              <MainButton
-              text="continuar"
-              onClick={confirmEmail}
-            />
-             <div className={styles.separator}>
-            <hr className={styles.line} />
-            <span>O</span>
-            <hr className={styles.line} />
-          </div>
-            <div>
-            <SocialButton text="Iniciar sesión con Facebook" onClick={handleFacebookLogin} style='FacebookButton'/>
-            <SocialButton text="Iniciar sesión con Google" onClick={handleGoogleLogin} style='GoogleButton'/>
-          </div>
-            </>
+              {verifiedEmail ? (
+                <>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    disabled={true}
+                    value={email}
+                    className={styles.input}
+                    style={{ marginBottom: "6%" }}
+                  />
+                  <VerificationCode setVerificationCode={setVerificationCode} />
+                  <MainButton
+                    text="Confirmar"
+                    onClick={handleConfirmLogin}
+                    disabled={verificationCode.length !== 6 || isButtonDisabled}
+                  />
+                </>
+              ) : (
+                <>
+                  <input
+                    type="mail"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    className={styles.input}
+                  />
+                  <MainButton
+                    text="continuar"
+                    onClick={confirmEmail}
+                  />
+                  <div className={styles.separator}>
+                    <hr className={styles.line} />
+                    <span>O</span>
+                    <hr className={styles.line} />
+                  </div>
+                  <div>
+                    <SocialButton text="Iniciar sesión con Facebook" onClick={handleFacebookLogin} style="FacebookButton" />
+                    <SocialButton text="Iniciar sesión con Google" onClick={handleGoogleLogin} style="GoogleButton" />
+                  </div>
+                </>
               )}
             </>
           ) : (

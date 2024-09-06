@@ -25,7 +25,7 @@ export default function Auth({ children }) {
     setDni(getDni);
     const { data } = await axios.get(`${process.env.API_URL}/users/${getDni}`);
     setLoading(false);
-    const { email } = data.mongoUser;
+    const { email } = data?.mongoUser || {};
     if (session?.user?.email && getDni) {
       if (email === session.user.email) {
         setCurrentUser(data.mongoUser);
